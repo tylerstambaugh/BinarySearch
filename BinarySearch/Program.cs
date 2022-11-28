@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+Console.WriteLine(BinarySearch.Find(new[]{ 1, 3, 4, 5, 6, 8, 9, 11, 56, 65 }, 6));
+
+Console.ReadLine();
+
 
 public static class BinarySearch
 {
@@ -9,40 +13,46 @@ public static class BinarySearch
     {
         int keyPosition = -1;
         bool keepSearching = true;
-        int[] currentArray = input;
-        int currentArrayMid;
+        int middleOfArrayIndex;
         int addr = 0;
-        if (currentArray.Length == 0)
+
+        if (input.Length == 0)
             keepSearching = false;
         while (keepSearching)
         {
-            if (currentArray.Length % 2 == 0)
+            //if input length is not even, put middleOfArrayIndex at 1/2 length 
+            if (input.Length % 2 == 0)
             {
-                currentArrayMid = currentArray.Length / 2 + 1;
+                middleOfArrayIndex = input.Length / 2;
             }
             else
             {
-                currentArrayMid = (currentArray.Length / 2);
+                middleOfArrayIndex = (input.Length / 2);
             }
-            if (currentArray[currentArrayMid] == value)
+
+            if (input[middleOfArrayIndex] == value)
             {
-                keyPosition = currentArrayMid + addr;
+                keyPosition = middleOfArrayIndex + addr;
                 keepSearching = false;
             }
-            else if (currentArray.Length == 1 && currentArray[0] != value)
+            //return -1 if value is not found
+            else if (input.Length == 1 && input[0] != value)
             {
                 keepSearching = false;
 
             }
-            else if (currentArray[currentArrayMid] > value)
+            //make input array equal to left half of original array
+            else if (input[middleOfArrayIndex] > value)
             {
-                currentArray = currentArray.Take(currentArrayMid).ToArray();
+                input = input.Take(middleOfArrayIndex).ToArray();
                 keepSearching = true;
             }
-            else if (currentArray[currentArrayMid] < value)
+
+            //make input array equal to right half of original array
+            else if (input[middleOfArrayIndex] < value)
             {
-                currentArray = currentArray.Skip(currentArrayMid).Take(currentArray.Length - (currentArrayMid - 1)).ToArray();
-                addr += currentArrayMid;
+                input = input.Skip(middleOfArrayIndex).Take(input.Length - (middleOfArrayIndex - 1)).ToArray();
+                addr += middleOfArrayIndex;
                 keepSearching = true;
             }
         }
